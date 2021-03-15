@@ -1,10 +1,6 @@
 import mongoose from "mongoose";
 
 const ApartmentSchema = mongoose.Schema({
-    landlord: {
-        type: String,
-        required: false,
-    },
     location: {
         houseNumber: String,
         street: String,
@@ -48,7 +44,27 @@ const ApartmentSchema = mongoose.Schema({
         enum: ["Self-contain", "1 bedroom", "2 bedroom", "3 bedroom", "Duplex"],
         default: "1 bedroom",
     },
-}, { timestamps: true });
+    reviews: [{
+        type: Schema.Types.ObjectId,
+        ref: "Review",
+    }, ],
+}, { timestamps: true }, {
+    toObject: { virtuals: true },
+    toJSON: { virtuals: true },
+});
+
+// eslint-disable-next-line func-names
+ApartmentSchema.virtual("averageRating").get(function() {
+    if (this.reviews.length > 0) {
+        const sum = this.reviews.reduce((total, review) => {
+            console.log("Review", review);
+            return total + review.rating;
+        }, 0);
+        return sum / this.reviews.length;
+    }
+
+    return 0;
+});
 
 const Apartment = mongoose.model("Apartment", ApartmentSchema);
 
