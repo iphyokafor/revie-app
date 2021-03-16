@@ -1,12 +1,13 @@
 import mongoose from "mongoose";
 
-const ReviewSchema = mongoose.Schema({
-    body: {
+const { Schema } = mongoose;
+const ReviewSchema = new Schema({
+    messageBody: {
         type: String,
         required: false,
     },
     rating: {
-        type: String,
+        type: Number,
     },
     apartmentId: {
         type: Schema.Types.ObjectId,

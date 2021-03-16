@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import faker from "faker";
 import dotenv from "dotenv";
 import userModel from "../Models/user";
+import apartmentModel from "../Models/apartment";
 import jwtHelper from "../helpers/utils/jwt";
 import bcryptHelper from "../helpers/utils/bcrypt";
 
@@ -32,6 +33,10 @@ const connect = () => {
 
 // Drop existing users if any
 const userModelSeed = () => userModel.deleteMany({});
+
+// Drop existing apartment if any
+const apartmentModelSeed = () => apartmentModel.deleteMany({});
+
 const Seeders = {
     async seedUserModel() {
         try {
@@ -57,12 +62,43 @@ const Seeders = {
             console.log("error", error);
         }
     },
+
+    async seedApartmentModel() {
+        try {
+            // make a bunch of apartment
+            const apartment = [];
+            for (let i = 0; i < 5; i += 1) {
+                const address = faker.address.streetAddress();
+                const amenities = "Water supply";
+                const photo = faker.image.city();
+                const video = faker.image.city();
+                const apartmentType = "Residential";
+                const apartmentCategory = "Self-contain";
+
+                const newApartment = {
+                    address,
+                    amenities,
+                    photo,
+                    video,
+                    apartmentType,
+                    apartmentCategory,
+                };
+                apartment.push(newApartment);
+            }
+
+            await apartmentModel.insertMany(apartment);
+        } catch (error) {
+            console.log("error", error);
+        }
+    },
 };
 
 const migration = async() => {
     try {
         await connect();
         await userModelSeed();
+        await apartmentModelSeed();
+        await Seeders.seedApartmentModel();
         await Seeders.seedUserModel();
         console.log("db migration successful");
     } catch (error) {

@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
 
-const ApartmentSchema = mongoose.Schema({
-    location: {
-        houseNumber: String,
-        street: String,
-        city: String,
+const { Schema } = mongoose;
+const ApartmentSchema = new Schema({
+    address: {
+        type: String,
+        required: false,
     },
     amenities: [{
         type: String,
@@ -19,13 +19,7 @@ const ApartmentSchema = mongoose.Schema({
         ],
         default: ["Security", "Water supply"],
     }, ],
-    ratings: [{
-        type: Number,
-    }, ],
-    averageRating: {
-        type: Number,
-        default: 0,
-    },
+
     photo: {
         type: String,
         required: false,
@@ -37,6 +31,7 @@ const ApartmentSchema = mongoose.Schema({
     apartmentType: {
         type: String,
         enum: ["Residential", "Commercial"],
+        default: "Residential",
         required: false,
     },
     apartmentCategory: {
