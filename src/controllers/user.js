@@ -25,6 +25,7 @@ export default class userController {
             const refreshedToken = await refreshToken({ user });
             response.send({
                 message: "welcome to Your Revie App",
+                user,
                 accessToken: token,
                 refreshToken: refreshedToken,
             });

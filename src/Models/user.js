@@ -30,6 +30,16 @@ const UserSchema = mongoose.Schema({
     },
 }, { timestamps: true });
 
+// eslint-disable-next-line func-names
+UserSchema.methods.toJSON = function() {
+    const user = this;
+    const userObject = user.toObject();
+
+    delete userObject.password;
+
+    return userObject;
+};
+
 const User = mongoose.model("User", UserSchema);
 
 export default User;
