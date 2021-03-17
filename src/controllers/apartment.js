@@ -48,6 +48,7 @@ export default class apartmentController {
                 .skip((page - 1) * limit)
                 .populate("reviews")
                 .collation({ locale: "en" })
+                .sort({ createdAt: -1 })
                 .exec();
 
             // return response with apartment, total pages, and current page
